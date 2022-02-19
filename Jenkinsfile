@@ -15,7 +15,7 @@ pipeline {
                 cd simple_webserver
                 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${DockerURL}
                 docker build -t simple-webserver-rita .
-                docker tag ${Image}  ${DockerURL}/${Image}
+                docker tag ${Image} ${DockerURL}/${Image}
                 docker push ${DockerURL}/${Image}
 
                 # docker build

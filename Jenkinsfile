@@ -11,12 +11,12 @@ pipeline {
             steps {
                 echo 'Building..'
                 sh '''
-                Image ='simple-webserver-rita:${BRANCH_NAME}_${BUILD_NUMBER}'
+                IMAGE='simple-webserver-rita:${BRANCH_NAME}_${BUILD_NUMBER}'
                 cd simple_webserver
                 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${DockerURL}
                 docker build -t simple-webserver-rita .
-                docker tag ${Image} ${DockerURL}/${Image}
-                docker push ${DockerURL}/${Image}
+                docker tag ${IMAGE} ${DockerURL}/${IMAGE}
+                docker push ${DockerURL}/${IMAGE}
 
                 # docker build
                 '''

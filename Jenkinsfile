@@ -19,6 +19,7 @@ pipeline {
                 docker tag ${IMAGE} ${DockerURL}/${IMAGE}
                 docker push ${DockerURL}/${IMAGE}
 
+
                 # docker build
                 '''
             }

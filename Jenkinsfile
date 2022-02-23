@@ -52,7 +52,6 @@ pipeline {
                 sh 'cd infra/dev'
                 sh '''
                 terraform init
-                terraform plan
                 terraform apply
                 '''
                 // copyArtifacts filter: 'infra/dev/terraform.tfstate', projectName: '${JOB_NAME}'

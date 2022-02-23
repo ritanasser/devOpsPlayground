@@ -3,7 +3,8 @@
 pipeline {
     agent any
     environment {
-    DockerURL ='352708296901.dkr.ecr.us-east-1.amazonaws.com'    }
+    DockerURL ='352708296901.dkr.ecr.us-east-1.amazonaws.com'
+       }
 
     stages {
         stage('Build Simple WebServer') {
@@ -11,7 +12,7 @@ pipeline {
             steps {
                 echo 'Building..'
                 sh '''
-                IMAGE='simple-webserver-rita:${BRANCH_NAME}_${BUILD_NUMBER}'
+                IMAGE="simple-webserver-rita:${BRANCH_NAME}_${BUILD_NUMBER}"
                 cd simple_webserver
                 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${DockerURL}
                 docker build -t ${IMAGE} .
@@ -27,25 +28,35 @@ pipeline {
             when { changeRequest() }
             steps {
                 echo 'Testing..'
-                sh 'pip3 install -r simple_webserver/requirements.txt'
-                sh 'python3 -m unittest simple_webserver/tests/test_flask_web.py'
+                sh '''
+                pip3 install -r simple_webserver/requirements.txt
+                python -m unittest simple_webserver/tests/test_flask_web.py
+                '''
             }
         }
-        stage('Provisioning - Dev') {
-            when { allOf { branch "dev"; changeset "infra/**/*.tf" } }
+        stage('Deploy - dev') {
+            steps {
+                echo 'Deploying ....'
+            }
+        }
+        stage('Deploy - prod') {
             steps {
                 echo 'Deploying....'
             }
         }
-        stage('Provisioning - Dev') {
-            when { allOf { branch "dev"; changeset "infra/**/*.tf" } }
+        stage('Provision - Dev') {
+            when { allOf {branch "dev"; changeset "infra/**/*.tf" }}
+            input {
+                message "Do you want to proceed for infrastructure provisioning?"
+            }
             steps {
-                echo 'Provisioning....'
-                sh 'cd infra/dev'
-                // sh 'terraform init'
+            echo 'Provisioning....'
+            sh 'cd infra/dev'
+            sh 'terraform init'
                 // copyArtifacts filter: 'infra/dev/terraform.tfstate', projectName: '${JOB_NAME}'
                 // archiveArtifacts artifacts: 'infra/dev/terraform.tfstate', onlyIfSuccessful: true
             }
         }
+
     }
 }

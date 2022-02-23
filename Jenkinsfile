@@ -44,19 +44,26 @@ pipeline {
                 echo 'Deploying....'
             }
         }
-        stage('Provision - Dev') {
-            when { allOf {branch "dev"; changeset "infra/**/*.tf" }}
-            input {
-                message "Do you want to proceed for infrastructure provisioning?"
-            }
+        stage('Provisioning - Dev') {
+            when { allOf { branch "dev"; changeset "infra/**/*.tf" } }
             steps {
-            echo 'Provisioning....'
-            sh 'cd infra/dev'
-            sh 'terraform init'
+                echo 'Deploying....'
+            }
+        }
+        stage('Provisioning - Dev') {
+            when { allOf { branch "dev"; changeset "infra/**/*.tf" } }
+            steps {
+                echo 'Provisioning....'
+                sh 'cd infra/dev'
+                sh '''
+                terraform init
+                terraform plan
+                terraform apply
+                '''
                 // copyArtifacts filter: 'infra/dev/terraform.tfstate', projectName: '${JOB_NAME}'
                 // archiveArtifacts artifacts: 'infra/dev/terraform.tfstate', onlyIfSuccessful: true
             }
         }
 
-    }
+
 }

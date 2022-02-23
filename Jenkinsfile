@@ -22,7 +22,7 @@ pipeline {
 
                 # docker build
                 '''
-            }
+            } }
         }
         stage('Test') {
             when { changeRequest() }
@@ -66,3 +66,4 @@ pipeline {
         }
 
 
+}

@@ -20,6 +20,8 @@ pipeline {
                 docker push ${DockerURL}/${IMAGE}
 
 
+
+
                 # docker build
                 '''
             }

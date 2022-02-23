@@ -44,12 +44,7 @@ pipeline {
                 echo 'Deploying....'
             }
         }
-        stage('Provisioning - Dev') {
-            when { allOf { branch "dev"; changeset "infra/**/*.tf" } }
-            steps {
-                echo 'Deploying....'
-            }
-        }
+
         stage('Provisioning - Dev') {
             when { allOf { branch "dev"; changeset "infra/**/*.tf" } }
             steps {

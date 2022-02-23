@@ -28,6 +28,10 @@ pipeline {
             when { changeRequest() }
             steps {
                 echo 'Testing..'
+                sh '''
+                pip3 install -r simple_webserver/requirements.txt
+                python -m unittest simple_webserver/tests/test_flask_web.py
+                '''
             }
         }
         stage('Deploy - dev') {

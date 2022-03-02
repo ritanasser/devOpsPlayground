@@ -26,6 +26,7 @@ pipeline {
 
                 # docker build
                 '''
+
             }
         }
         stage('Test') {

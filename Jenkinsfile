@@ -50,8 +50,8 @@ pipeline {
             //}
         //}
 
-        stage('Provision - dev') {
-            when { changeset "infra/dev/**" } }
+        stage('Provision- dev') {
+            when { changeset "infra/dev/**" }
              // input {
                //message "Do you want to proceed for infrastructure provisioning?"
             //}
@@ -67,10 +67,9 @@ pipeline {
         }
 
 
-
+}
 post {
         always {
             emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
         }
     }
-}

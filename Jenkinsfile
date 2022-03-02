@@ -51,8 +51,8 @@ pipeline {
             }
             steps {
                 echo 'Provisioning....'
-                sh 'cd infra/dev'
                 sh '''
+                cd infra/dev
                 terraform init && terraform paln && terraform apply -auto-approve
                 '''
                 // copyArtifacts filter: 'infra/dev/terraform.tfstate', projectName: '${JOB_NAME}'

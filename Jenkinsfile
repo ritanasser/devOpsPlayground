@@ -58,7 +58,7 @@ pipeline {
             steps {
                 sh '''
                 cd infra/dev
-                terraform init && terraform paln && terraform apply -auto-approve
+                terraform init && terraform apply -auto-approve
                 '''
                 // copyArtifacts filter: 'infra/dev/terraform.tfstate', projectName: '${JOB_NAME}'
                 archiveArtifacts artifacts: 'infra/dev/terraform.tfstate', onlyIfSuccessful: true

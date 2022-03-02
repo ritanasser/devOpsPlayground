@@ -1,12 +1,13 @@
 // Jenkins env var reference https://www.jenkins.io/doc/book/pipeline/jenkinsfile/#working-with-your-jenkinsfile
 
 pipeline {
-    agent any
+    agent{ lable 'ec2-fleet'}
     environment {
     DockerURL ='352708296901.dkr.ecr.us-east-1.amazonaws.com'
        }
 
     stages {
+
         stage('Build Simple WebServer') {
             when { anyOf { branch "master"; branch "dev" }}
             steps {
@@ -18,6 +19,8 @@ pipeline {
                 docker build -t ${IMAGE} .
                 docker tag ${IMAGE} ${DockerURL}/${IMAGE}
                 docker push ${DockerURL}/${IMAGE}
+                ec2-metadata
+
 
 
                 # docker build

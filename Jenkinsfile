@@ -49,16 +49,16 @@ pipeline {
             }
         }
 
-        stage('Provisioning - Dev') {
-            when { allOf { branch "dev"; changeset "infra/**/*.tf" } }
-              input {
-               message "Do you want to proceed for infrastructure provisioning?"
-            }
+        stage('Provisioning - dev') {
+            when { allOf { branch "dev"; changeset "infra/dev/**" } }
+             // input {
+               //message "Do you want to proceed for infrastructure provisioning?"
+            //}
             steps {
                 echo 'Provisioning....'
                 sh 'cd infra/dev'
                 sh '''
-                terraform init && apply -auto-approve
+                terraform init && terraform paln && terraform apply -auto-approve
                 '''
                 // copyArtifacts filter: 'infra/dev/terraform.tfstate', projectName: '${JOB_NAME}'
                 archiveArtifacts artifacts: 'infra/dev/terraform.tfstate', onlyIfSuccessful: true

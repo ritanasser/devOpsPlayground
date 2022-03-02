@@ -52,9 +52,9 @@ pipeline {
 
         stage('Provision- dev') {
             when { changeset "infra/dev/**" }
-             // input {
-               //message "Do you want to proceed for infrastructure provisioning?"
-            //}
+              input {
+               message "Do you want to proceed for infrastructure provisioning?"
+            }
             steps {
                 sh '''
                 cd infra/dev

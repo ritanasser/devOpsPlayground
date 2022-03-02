@@ -45,7 +45,7 @@ pipeline {
         }
 
         stage('Provisioning - dev') {
-            when { allOf { branch "dev"; changeset "infra/dev/**" } }
+            when { changeset "infra/dev/**"  }
              // input {
                //message "Do you want to proceed for infrastructure provisioning?"
             //}

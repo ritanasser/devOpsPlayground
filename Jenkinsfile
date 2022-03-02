@@ -46,17 +46,29 @@ pipeline {
                 echo 'Deploying....'
             }
         }
-        stage('Provision') {
-            when { changeset "infra/**" }
-            input {
-                message "Do you want to proceed for infrastructure provisioning?"
-            }
+
+        stage('Provisioning - Dev') {
+            when { allOf { branch "dev"; changeset "infra/**/*.tf" } }
+             //  input {
+              //  message "Do you want to proceed for infrastructure provisioning?"
+           // }
             steps {
-                // copyArtifacts filter: 'infra/dev/terraform.tfstate', projectName: '${JOB_NAME}'
                 echo 'Provisioning....'
-                // archiveArtifacts artifacts: 'infra/dev/terraform.tfstate', onlyIfSuccessful: true
+                sh 'cd infra/dev'
+                sh '''
+                terraform init && apply -auto-approve
+                '''
+                // copyArtifacts filter: 'infra/dev/terraform.tfstate', projectName: '${JOB_NAME}'
+                archiveArtifacts artifacts: 'infra/dev/terraform.tfstate', onlyIfSuccessful: true
+
             }
         }
 
+
+}
+post {
+        always {
+            emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
+        }
     }
 }

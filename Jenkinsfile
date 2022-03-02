@@ -33,22 +33,22 @@ pipeline {
                 '''
             }
         }
-        stage('Deploy - dev') {
-            steps {
-                echo 'Deploying ....'
-            }
-        }
-        stage('Deploy - prod') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
-
-        stage('Provisioning - dev') {
-            when { changeset "infra/dev/**"  }
-             // input {
-               //message "Do you want to proceed for infrastructure provisioning?"
+       // stage('Deploy - dev') {
+         //   steps {
+           //     echo 'Deploying ....'
             //}
+        //}
+        //stage('Deploy - prod') {
+          //  steps {
+            //    echo 'Deploying....'
+            //}
+        //}
+
+        stage('Provision - dev') {
+            when { changeset "infra/dev/**"  }
+              input {
+               message "Do you want to proceed for infrastructure provisioning?"
+            }
             steps {
                 echo 'Provisioning....'
                 sh 'cd infra/dev'

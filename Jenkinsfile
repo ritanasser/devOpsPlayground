@@ -55,6 +55,7 @@ pipeline {
               input {
                message "Do you want to proceed for infrastructure provisioning?"
             }
+
             steps {
                 sh '''
                 cd infra/dev
